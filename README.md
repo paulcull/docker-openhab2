@@ -1,3 +1,11 @@
+
+This is just a playgound. I will probably delete it when I've finished or get bored
+
+Forked from Wetware dockerbuild to hold my configs and test. Fork from wetware for a clean build
+
+====================================
+
+
 Overview
 ========
 

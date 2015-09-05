@@ -9,7 +9,6 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y unzip supervisor wget
 
 ENV OPENHAB_VERSION SNAPSHOT 
-#ENV OPENHAB_VERSION 2.0.0.alpha2
 
 #
 # Download openHAB based on Environment OPENHAB_VERSION
@@ -48,6 +47,8 @@ COPY files/boot.sh /usr/local/bin/boot.sh
 COPY files/openhab-restart /etc/network/if-up.d/openhab-restart
 COPY files/start.sh /opt/openhab/
 COPY files/start_debug.sh /opt/openhab/
+COPY files/addons.cfg /opt/openhab/conf/
+COPY files/addons-oh1.cfg /opt/openhab/conf/
 
 RUN touch /opt/openhab/conf/DEMO_MODE && \
   mkdir -p /opt/openhab/logs
