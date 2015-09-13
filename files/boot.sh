@@ -90,8 +90,6 @@ else
   echo addons-oh1.cfg not found.
 fi
 
-# copy example add-on configuration (old openhab.cfg) 
-cp -n /opt/openhab/openhab_default.cfg $CONFIG_DIR/services/openhab.cfg
 
 
 ###########################################
@@ -99,8 +97,16 @@ cp -n /opt/openhab/openhab_default.cfg $CONFIG_DIR/services/openhab.cfg
 
 if [ ! -f "$CONFIG_DIR/DEMO_MODE" ]
 then
-  echo configuration found.
-#  rm -rf /tmp/demo-openhab*
+  echo --------------------------------------------------------
+  echo          openhab.cfg CONFIGURATION FOUND
+  echo
+  echo                = using provided files =
+  echo
+  echo --------------------------------------------------------
+  #cp -n $CONFIG_DIR/openhab.cfg $CONFIG_DIR/services/openhab.cfg
+  cp -n $CONFIG_DIR/openhab.cfg $/opt/openhab/services/openhab.cfg
+  #  rm -rf /tmp/demo-openhab*
+
 else
   echo --------------------------------------------------------
   echo          NO openhab.cfg CONFIGURATION FOUND
@@ -110,6 +116,8 @@ else
   echo Consider running the Docker with a openhab configuration
   echo 
   echo --------------------------------------------------------
+  # copy example add-on configuration (old openhab.cfg)   
+  cp -n /opt/openhab/openhab_default.cfg $CONFIG_DIR/services/openhab.cfg
   cp -R /opt/openhab/demo-configuration/conf/* /etc/openhab/
   ln -s /opt/openhab/demo-configuration/addons/* /opt/openhab/addons/
 #  ln -s /etc/openhab/openhab_default.cfg /etc/openhab/openhab.cfg

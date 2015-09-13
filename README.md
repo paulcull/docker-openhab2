@@ -5,6 +5,10 @@ Forked from Wetware dockerbuild to hold my configs and test. Fork from wetware f
 
 ====================================
 
+- bumped to jre8u66
+- added configs
+
+
 
 Overview
 ========

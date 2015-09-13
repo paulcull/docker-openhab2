@@ -1,8 +1,9 @@
 # Openhab 2.0.0
 # * configuration is injected
 #
-FROM java:8u45-jre
-MAINTAINER Marcus of Wetware Labs <marcus@wetwa.re>
+FROM java:8u66-jre
+#MAINTAINER Marcus of Wetware Labs <marcus@wetwa.re>
+MAINTAINER paulcull
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -40,19 +41,37 @@ RUN wget -q -P /tmp/ https://openhab.ci.cloudbees.com/job/openHAB/lastStableBuil
 # Setup other configuration files and scripts
 #
 COPY files/pipework /usr/local/bin/pipework
+# non-openhab configs
 COPY files/supervisord.conf /etc/supervisor/supervisord.conf
 COPY files/openhab.conf /etc/supervisor/conf.d/openhab.conf
 COPY files/openhab_debug.conf /etc/supervisor/conf.d/openhab_debug.conf
+# start / stop scripts
 COPY files/boot.sh /usr/local/bin/boot.sh
 COPY files/openhab-restart /etc/network/if-up.d/openhab-restart
 COPY files/start.sh /opt/openhab/
 COPY files/start_debug.sh /opt/openhab/
-COPY files/addons.cfg /opt/openhab/conf/
-COPY files/addons-oh1.cfg /opt/openhab/conf/
+#
+# Fork specific changes
+#
+#COPY files/oh-configs/addons.cfg /etc/openhab/
+#COPY files/oh-configs/addons-oh1.cfg /etc/openhab/
+#COPY files/oh-configs/openhab.cfg /etc/openhab/services/openhab.cfg
+#COPY files/oh-configs/timezone /etc/openhab/
+COPY files/oh-configs/addons.cfg /etc/openhab/
+COPY files/oh-configs/addons-oh1.cfg /etc/openhab/
+COPY files/oh-configs/openhab.cfg /opt/openhab/services/openhab.cfg
+COPY files/oh-configs/timezone /etc/openhab/
 
-RUN touch /opt/openhab/conf/DEMO_MODE && \
-  mkdir -p /opt/openhab/logs
+#RUN touch /opt/openhab/conf/DEMO_MODE 
+RUN mkdir -p /opt/openhab/logs
+RUN mkdir -p /opt/openhab/conf/persistence
+RUN mkdir -p /opt/openhab/conf/items
+RUN mkdir -p /opt/openhab/conf/rules
+RUN mkdir -p /opt/openhab/conf/scripts
+RUN mkdir -p /opt/openhab/conf/sitemaps
+RUN mkdir -p /opt/openhab/conf/things
 
 EXPOSE 8080 8443 5555 9001
 
 CMD ["/usr/local/bin/boot.sh"]
+
