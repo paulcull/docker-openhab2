@@ -38,4 +38,8 @@ mv /tmp/org.openhab.io.myopenhab-1.7.0.jar /opt/openhab/addons-available
 mv /opt/openhab/conf /etc/openhab
 ln -s /etc/openhab /opt/openhab/conf
 
+# use the demo keystore for the jetty server
+cp /opt/openhab/demo-configuration/runtime/etc/keystore /opt/openhab/runtime/etc/keystore
+
+# tidy up
 rm -f /tmp/distribution-* /tmp/demo-openhab.zip /tmp/hyperic-sigar-*

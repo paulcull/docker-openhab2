@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONFIG_DIR=/etc/openhab/
+OHHOME=/opt/openhab/
 
 ####################
 # Configure timezone
@@ -16,8 +17,8 @@ fi
 ###########################
 # Configure Addon libraries
 
-SOURCE=/opt/openhab/addons-available
-DEST=/opt/openhab/addons
+SOURCE=$OHHOME/addons-available
+DEST=$OHHOME/addons
 ADDONFILE=$CONFIG_DIR/addons.cfg
 
 # Remove all links first
@@ -53,7 +54,7 @@ fi
 # copy example add-on configuration files if EXAMPLE_CONF is set
 if [ "$EXAMPLE_CONF" ]
 then
-  cp -Rn $SOURCE/conf/* $CONFIG_DIR/
+	cp -Rn $SOURCE/conf/* $CONFIG_DIR/
 fi
 
 ###########################
@@ -90,8 +91,6 @@ else
   echo addons-oh1.cfg not found.
 fi
 
-# copy example add-on configuration (old openhab.cfg) 
-cp -n /opt/openhab/openhab_default.cfg $CONFIG_DIR/services/openhab.cfg
 
 
 ###########################################
@@ -99,8 +98,16 @@ cp -n /opt/openhab/openhab_default.cfg $CONFIG_DIR/services/openhab.cfg
 
 if [ ! -f "$CONFIG_DIR/DEMO_MODE" ]
 then
-  echo configuration found.
-#  rm -rf /tmp/demo-openhab*
+  echo --------------------------------------------------------
+  echo          openhab.cfg CONFIGURATION FOUND
+  echo
+  echo                = using provided files =
+  echo
+  echo --------------------------------------------------------
+  #cp -n $CONFIG_DIR/openhab.cfg $CONFIG_DIR/services/openhab.cfg
+  cp -n $CONFIG_DIR/openhab.cfg $/opt/openhab/services/openhab.cfg
+  #  rm -rf /tmp/demo-openhab*
+
 else
   echo --------------------------------------------------------
   echo          NO openhab.cfg CONFIGURATION FOUND
@@ -110,6 +117,8 @@ else
   echo Consider running the Docker with a openhab configuration
   echo 
   echo --------------------------------------------------------
+  # copy example add-on configuration (old openhab.cfg)   
+  cp -n /opt/openhab/openhab_default.cfg $CONFIG_DIR/services/openhab.cfg
   cp -R /opt/openhab/demo-configuration/conf/* /etc/openhab/
   ln -s /opt/openhab/demo-configuration/addons/* /opt/openhab/addons/
 #  ln -s /etc/openhab/openhab_default.cfg /etc/openhab/openhab.cfg
@@ -128,9 +137,13 @@ ETH0_FOUND=`grep "eth0" /proc/net/dev`
 if [ -n "$ETH0_FOUND" ] ;
 then 
   # We're in a container with regular eth0 (default)
-  exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+  exec /usr/bin/top
+  #exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
 else 
   # We're in a container without initial network.  Wait for it...
-  /usr/local/bin/pipework --wait
-  exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+  #/usr/local/bin/pipework --wait
+  #exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+  exec /usr/bin/top
 fi
+
+

@@ -47,31 +47,37 @@ COPY files/openhab.conf /etc/supervisor/conf.d/openhab.conf
 COPY files/openhab_debug.conf /etc/supervisor/conf.d/openhab_debug.conf
 # start / stop scripts
 COPY files/boot.sh /usr/local/bin/boot.sh
+COPY files/boot_nothing.sh /usr/local/bin/boot_nothing.sh
 COPY files/openhab-restart /etc/network/if-up.d/openhab-restart
 COPY files/start.sh /opt/openhab/
 COPY files/start_debug.sh /opt/openhab/
 #
 # Fork specific changes
 #
-#COPY files/oh-configs/addons.cfg /etc/openhab/
-#COPY files/oh-configs/addons-oh1.cfg /etc/openhab/
-#COPY files/oh-configs/openhab.cfg /etc/openhab/services/openhab.cfg
-#COPY files/oh-configs/timezone /etc/openhab/
-COPY files/oh-configs/addons.cfg /etc/openhab/
-COPY files/oh-configs/addons-oh1.cfg /etc/openhab/
-COPY files/oh-configs/openhab.cfg /opt/openhab/services/openhab.cfg
-COPY files/oh-configs/timezone /etc/openhab/
+#
+# Just testing
+# COPY files/test.txt /opt/openhab/test.txt
+# COPY files/oh-configs/test2.txt /opt/openhab/test2.txt
+# COPY files/oh-configs/test2.txt /etc/openhab/test2.txt
+# #
+COPY files/oh-configs/addons.cfg      /etc/openhab/addons.cfg
+COPY files/oh-configs/addons-oh1.cfg  /etc/openhab/addons-oh1.cfg
+# # COPY files/oh-configs/openhab.cfg     /opt/openhab/services/openhab.cfg
+COPY files/oh-configs/openhab.cfg     /opt/openhab/openhab.cfg
+COPY files/oh-configs/timezone        /etc/openhab/timezone
 
 #RUN touch /opt/openhab/conf/DEMO_MODE 
-RUN mkdir -p /opt/openhab/logs
-RUN mkdir -p /opt/openhab/conf/persistence
-RUN mkdir -p /opt/openhab/conf/items
-RUN mkdir -p /opt/openhab/conf/rules
-RUN mkdir -p /opt/openhab/conf/scripts
-RUN mkdir -p /opt/openhab/conf/sitemaps
-RUN mkdir -p /opt/openhab/conf/things
+# RUN mkdir -p /opt/openhab/logs
+RUN mkdir -p /opt/openhab/userdata/logs
+
+# RUN mkdir -p /opt/openhab/conf/persistence
+# RUN mkdir -p /opt/openhab/conf/items
+# RUN mkdir -p /opt/openhab/conf/rules
+# RUN mkdir -p /opt/openhab/conf/scripts
+# RUN mkdir -p /opt/openhab/conf/sitemaps
+# RUN mkdir -p /opt/openhab/conf/things
 
 EXPOSE 8080 8443 5555 9001
 
 CMD ["/usr/local/bin/boot.sh"]
-
+#CMD ["/usr/local/bin/boot_nothing.sh"]
